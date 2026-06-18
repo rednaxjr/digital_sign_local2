@@ -1,0 +1,83 @@
+<div class="modal-layout">
+
+    <!-- Left: PDF Viewer -->
+    <div class="panel pdf-panel">
+        <div class="panel-header">
+            <span class="material-icons pdf-icon">picture_as_pdf</span>
+            <span class="panel-title">{{ data.pdf.name }}</span>
+        </div>
+        <div class="pdf-body">
+            <pdf-viewer
+                [src]="data.pdf.url"
+                [render-text]="true"
+                [original-size]="false"
+                class="w-full h-full">
+            </pdf-viewer>
+        </div>
+    </div>
+
+    <!-- Right: Signature Panel -->
+    <div class="panel sig-panel">
+
+        <div class="panel-header">
+            <span class="material-icons sig-icon">draw</span>
+            <span class="panel-title">
+                {{ data.pdf.signatureCount === 1 ? 'Saved Signature' : 'Draw Your Signature' }}
+            </span>
+        </div>
+
+        <!-- No signature: show canvas -->
+        <div class="sig-body" [hidden]="data.pdf.signatureCount == 1">
+            <div class="canvas-wrapper" #canvasContainer>
+                <canvas #canvas class="canvas-el"></canvas>
+                <div *ngIf="isEmpty" class="canvas-placeholder">
+                    <span class="material-icons" style="font-size:56px;color:#4338ca">gesture</span>
+                    <span class="placeholder-text">Sign here</span>
+                </div>
+                <div class="sig-line"></div>
+            </div>
+        </div>
+        <!-- {{data.pdf.signatureCount}} -->
+
+        <!-- Has signature: show image in same canvas wrapper -->
+        <div class="sig-body" [hidden]="data.pdf.signatureCount == 0">
+            <div class="canvas-wrapper">
+                <img *ngIf="data.pdf.signatures.length > 0"
+                    [src]="data.pdf.signatures[0].url"
+                    class="absolute inset-0 w-full h-full object-contain p-4" />
+                <div class="sig-line"></div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-row">
+
+            <!-- No signature: Save + Clear + Cancel -->
+            <ng-container *ngIf="data.pdf.signatureCount == 0">
+                <button (click)="save()" class="btn btn-save"
+                    [class.btn-disabled]="isEmpty" [disabled]="isEmpty">
+                    <span class="material-icons">save</span>
+                    Save Signature
+                </button>
+                <button (click)="clear()" *ngIf="!isEmpty" class="btn btn-outline">
+                    <span class="material-icons">restart_alt</span>
+                    Clear
+                </button>
+                <button (click)="close()" class="btn btn-outline">
+                  
+                    Cancel
+                </button>
+            </ng-container>
+
+            <!-- Has signature: Close only -->
+            <ng-container *ngIf="data.pdf.signatureCount == 1">
+                <button (click)="close()" class="btn btn-outline">
+                   
+                    Close
+                </button>
+            </ng-container>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,146 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.mat-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+    overflow: hidden;
+    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+}
+
+.table-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    background: #fff;
+}
+
+.table-header {
+    font-size: 0.95rem !important; 
+    color: #475569 !important; 
+    letter-spacing: 0.05em;
+    padding: 18px 20px !important;
+    background-color: #f8fafc !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+/* Data cells */
+.table-cell {
+    padding: 16px 20px !important;
+    font-size: 1rem !important;
+    color: #334155;
+    border-bottom: 2px solid #e0e0e0 !important;
+}
+  
+.file-icon {
+    width: 25px;
+    height: 25px;
+    background: #fff1f2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+ 
+.status-signed {
+    color: #16a34a;
+    font-weight: 500;
+}
+
+.status-unsigned {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+.col-equal {
+    width: 40%;
+}
+
+.action-col-header,
+.action-col-cell {
+    width: 20%;
+    white-space: nowrap;
+}
+ 
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease; 
+    white-space: nowrap;
+}
+
+.action-btn-edit {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+
+    &:hover {
+        background-color: #dbeafe;
+    }
+}
+
+.action-btn-delete {
+    background-color: #fff1f2;
+    color: #e11d48;
+    border-color: #fecdd3;
+
+    &:hover {
+        background-color: #ffe4e6;
+    }
+}
+
+.action-btn-disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Paginator */
+.paginator-wrapper {
+    flex-shrink: 0;
+    border-top: 2px solid #f1f5f9;
+    background: #f8fafc;
+}
+
+::ng-deep .mat-mdc-paginator {
+    background: transparent !important;
+    font-size: 1rem !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+    font-size: 1rem !important;
+    color: #475569;
+}
+
+::ng-deep .mat-mdc-row:nth-child(odd) {
+    background-color: #f9fafb;
+}
+
+::ng-deep .mat-mdc-row:nth-child(even) {
+    background-color: #f3f4f6;
+}
+
+::ng-deep .mat-mdc-row:hover {
+    background-color: #e5e7eb !important;
+    transition: background-color 0.2s ease;
+ 
+}

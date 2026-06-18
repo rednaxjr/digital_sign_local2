@@ -1,0 +1,15 @@
+<div class="shrink-0 mb-4 flex items-center justify-between">
+  <div>
+    <p class="font-bold text-3xl text-slate-800">Document List</p> 
+  </div>
+
+</div>
+ 
+  <div
+    class="flex-1 min-h-0 bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
+    <app-document-table
+      [data]="documents_list"
+      (signatureSaved)="handleSignatureSaved($event)"
+      (deleteConfirmed)="deleted()">
+    </app-document-table>
+  </div> 
