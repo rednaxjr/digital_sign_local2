@@ -5,3 +5,67 @@
     min-height: 0;
     height: 100%;
 }
+
+/* ── Portrait card action buttons ────────────────── */
+.card-btn-row {
+    display: flex;
+    gap: 10px;
+}
+
+.card-action-btn {
+     padding-top: 0.75rem /* 12px */;
+    padding-bottom: 0.75rem /* 12px */;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    
+    border-radius: 9px;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+
+    .material-icons { font-size: 15px; }
+
+    &:active:not(:disabled) {
+        transform: scale(0.97);
+    }
+}
+
+/* Sign — indigo gradient */
+.btn-sign {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+
+    &:hover { opacity: 0.9; }
+}
+
+/* View — slate */
+.btn-view {
+   background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(51, 65, 85, 0.25);
+
+    &:hover { opacity: 0.9; }
+}
+
+/* Delete — red */
+.btn-delete {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+
+    &:hover { opacity: 0.9; }
+}
+
+/* Delete disabled */
+.btn-delete-disabled {
+    background: #f1f5f9;
+    color: #cbd5e1;
+    box-shadow: none;
+    cursor: not-allowed;
+}

@@ -23,8 +23,8 @@
 }
 
 .table-header {
-    font-size: 0.95rem !important; 
-    color: #475569 !important; 
+    font-size: 0.95rem !important;
+    color: #475569 !important;
     letter-spacing: 0.05em;
     padding: 18px 20px !important;
     background-color: #f8fafc !important;
@@ -40,7 +40,7 @@
     color: #334155;
     border-bottom: 2px solid #e0e0e0 !important;
 }
-  
+
 .file-icon {
     width: 25px;
     height: 25px;
@@ -51,7 +51,7 @@
     justify-content: center;
     flex-shrink: 0;
 }
- 
+
 .status-signed {
     color: #16a34a;
     font-weight: 500;
@@ -71,7 +71,7 @@
     width: 20%;
     white-space: nowrap;
 }
- 
+
 .action-btn {
     display: inline-flex;
     align-items: center;
@@ -82,14 +82,14 @@
     font-weight: 600;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.15s ease; 
+    transition: all 0.15s ease;
     white-space: nowrap;
 }
 
 .action-btn-edit {
-    background-color: #eff6ff;
-    color: #2563eb;
-    border-color: #bfdbfe;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 
     &:hover {
         background-color: #dbeafe;
@@ -97,9 +97,9 @@
 }
 
 .action-btn-delete {
-    background-color: #fff1f2;
-    color: #e11d48;
-    border-color: #fecdd3;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
 
     &:hover {
         background-color: #ffe4e6;
@@ -142,5 +142,5 @@
 ::ng-deep .mat-mdc-row:hover {
     background-color: #e5e7eb !important;
     transition: background-color 0.2s ease;
- 
+
 }

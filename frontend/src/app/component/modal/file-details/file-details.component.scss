@@ -3,20 +3,16 @@
 }
 
 .modal-layout {
+    position: relative;
     display: flex;
     flex-direction: row;
     gap: 10px;
-    height: 100vh;
-    padding: 8px 8px;
+    height: 100%;
+    padding: 8px;
     background: #f1f5f9;
     box-sizing: border-box;
-
-    // @media (max-width: 768px) {
-    //     flex-direction: column;
-    //     overflow-y: auto;
-    //     height: auto;
-    //     min-height: 100vh;
-    // }
+    transition: gap 0.4s ease;
+    overflow: hidden;
 }
  
 .panel {
@@ -33,6 +29,21 @@
 .sig-panel {
     flex: 1;
     min-width: 0;
+    transition: flex 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+    overflow: hidden;
+}
+
+/* Expanded state — sig panel collapses out */
+.pdf-expanded .sig-panel {
+    flex: 0;
+    opacity: 0;
+    padding: 0;
+    border-width: 0;
+    pointer-events: none;
+}
+
+.pdf-expanded .pdf-panel {
+    flex: 1;
 }
  
 .panel-header {
@@ -57,11 +68,78 @@
 .pdf-icon  { color: #ef4444; font-size: 26px !important; }
 .sig-icon  { color: #6366f1; font-size: 26px !important; }
 
+/* ── Header buttons (end of panel headers) ───────── */
+.header-close-btn,
+.header-collapse-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f5f9;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    .material-icons { font-size: 24px; }
+}
+
+/* Close (modal) — red affordance */
+.header-close-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* Collapse (signature sheet) — indigo affordance, portrait only */
+.header-collapse-btn {
+    display: none;
+
+    .material-icons { font-size: 28px; }
+
+    &:hover {
+        background: #e0e7ff;
+        color: #4f46e5;
+    }
+}
+
 /* ── PDF body ────────────────────────────────────── */
 .pdf-body {
     flex: 1;
     min-height: 0;
     overflow: hidden;
+    position: relative;
+}
+
+/* ── Floating toggle button ──────────────────────── */
+.pdf-toggle-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(79, 70, 229, 0.85);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(4px);
+
+    .material-icons { font-size: 20px; }
+
+    &:hover {
+        background: rgba(67, 56, 202, 0.95);
+        transform: scale(1.1);
+    }
 }
 
 /* ── Signature body ──────────────────────────────── */
@@ -196,4 +274,122 @@
     opacity: 0.45;
     cursor: not-allowed;
     pointer-events: none;
+}
+
+/* ── Portrait-only signature toggle (chevron) ────────
+   Hidden in landscape; revealed inside the portrait media query. */
+.sig-toggle-btn {
+    display: none;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45);
+    opacity: 1;
+    transition: bottom 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.2s ease, transform 0.2s ease;
+
+    .material-icons { font-size: 30px; }
+
+    &:hover {
+        background: linear-gradient(135deg, #4338ca, #4f46e5);
+    }
+
+    &:active {
+        transform: translateX(-50%) scale(0.94);
+    }
+}
+
+/* ════════════════════════════════════════════════════
+   PORTRAIT  (e.g. tablet 1280 × 1920)
+   - Panels stack as a column instead of a row
+   - PDF fills the viewport; the signature panel becomes
+     a bottom-sheet that slides up/down via the chevron
+   ════════════════════════════════════════════════════ */
+@media (orientation: portrait) {
+
+    .modal-layout {
+        flex-direction: column;
+    }
+
+    /* PDF takes the whole stage */
+    .pdf-panel {
+        flex: 1;
+        min-height: 0;
+    }
+
+    /* The landscape maximize button is not used in portrait */
+    .pdf-toggle-btn {
+        display: none;
+    }
+
+    /* Signature panel = full-height sliding sheet, hidden at start */
+    .sig-panel {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 8px;
+        bottom: 8px;
+        height: auto;
+        flex: none;
+        border-radius: 24px;
+        transform: translateY(110%);
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.22);
+        z-index: 30;
+    }
+
+    /* Slid up (visible) */
+    .modal-layout.sig-open .sig-panel {
+        transform: translateY(0);
+    }
+
+    /* Defensive: never let the landscape "expanded" rule hide the sheet */
+    .pdf-expanded .sig-panel {
+        opacity: 1;
+        padding: 0;
+        border-width: 1px;
+        pointer-events: auto;
+    }
+
+    /* The chevron toggle is the portrait control */
+    .sig-toggle-btn {
+        display: flex;
+    }
+
+    /* Show the in-header collapse button while the sheet is up */
+    .header-collapse-btn {
+        display: flex;
+    }
+
+    /* Expand: the toggle slides upward and fades out over ~0.8s (in sync with
+       the rising sheet). Collapse plays the same transition in reverse, so the
+       toggle reappears and rides down together with the panel. Kept on `bottom`
+       (single property) so the motion is a smooth slide, never a jump. */
+    .modal-layout.sig-open .sig-toggle-btn {
+        bottom: calc(100% - 72px);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Let the canvas grow with the taller sheet instead of a fixed height */
+    .sig-body {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .canvas-wrapper {
+        height: 100%;
+    }
 }

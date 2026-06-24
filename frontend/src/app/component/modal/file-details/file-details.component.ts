@@ -26,16 +26,19 @@ export class FileDetailsComponent implements AfterViewInit, OnDestroy {
   signaturePad!: SignaturePad;
   resizeObserver!: ResizeObserver;
   isEmpty = true;
-  fname: any;
-  lname: any;
-  mname: any;
+  isPdfExpanded = false;
+  /** Portrait-only: controls whether the signature bottom-sheet is slid up (visible). Starts hidden so the PDF is full-size. */
+  isSigPanelOpen = false;
   page: any = 1;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialogRef<FileDetailsComponent>,
     private file_service: FileService
-  ) { 
+  ) {
+    // If the PDF already has a signature, slide the signature panel up first
+    // (in portrait) instead of showing the PDF panel first.
+    this.isSigPanelOpen = this.data?.pdf?.signatureCount === 1;
   }
 
   ngAfterViewInit() {
@@ -103,6 +106,15 @@ export class FileDetailsComponent implements AfterViewInit, OnDestroy {
     return new Blob([array], { type: mime });
   }
 
+
+  togglePdf() {
+    this.isPdfExpanded = !this.isPdfExpanded;
+  }
+
+  /** Portrait-only: slide the signature panel up/down over the full-size PDF. */
+  toggleSigPanel() {
+    this.isSigPanelOpen = !this.isSigPanelOpen;
+  }
 
   close() {
     this.dialog.close({

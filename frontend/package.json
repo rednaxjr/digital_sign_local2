@@ -20,7 +20,8 @@
     "win": {
       "target": "nsis",
       "icon": "src/assets/icon.ico",
-      "signAndEditExecutable": false
+      "signAndEditExecutable": false,
+      "publisherName": "Digital Signature"
     },
     "nsis": {
       "oneClick": false,

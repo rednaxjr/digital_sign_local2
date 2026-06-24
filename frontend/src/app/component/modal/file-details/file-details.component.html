@@ -1,10 +1,12 @@
-<div class="modal-layout">
-
-    <!-- Left: PDF Viewer -->
+<div class="modal-layout" [class.pdf-expanded]="isPdfExpanded" [class.sig-open]="isSigPanelOpen">
+ 
     <div class="panel pdf-panel">
         <div class="panel-header">
             <span class="material-icons pdf-icon">picture_as_pdf</span>
             <span class="panel-title">{{ data.pdf.name }}</span>
+            <button class="header-close-btn" (click)="close()" title="Close">
+                <span class="material-icons">close</span>
+            </button>
         </div>
         <div class="pdf-body">
             <pdf-viewer
@@ -12,11 +14,13 @@
                 [render-text]="true"
                 [original-size]="false"
                 class="w-full h-full">
-            </pdf-viewer>
+            </pdf-viewer> 
+            <button class="pdf-toggle-btn" (click)="togglePdf()" [title]="isPdfExpanded ? 'Restore' : 'Maximize'">
+                <span class="material-icons">{{ isPdfExpanded ? 'close_fullscreen' : 'open_in_full' }}</span>
+            </button>
         </div>
     </div>
-
-    <!-- Right: Signature Panel -->
+ 
     <div class="panel sig-panel">
 
         <div class="panel-header">
@@ -24,9 +28,10 @@
             <span class="panel-title">
                 {{ data.pdf.signatureCount === 1 ? 'Saved Signature' : 'Draw Your Signature' }}
             </span>
+            <button class="header-collapse-btn" (click)="toggleSigPanel()" title="Collapse">
+                <span class="material-icons">keyboard_arrow_down</span>
+            </button>
         </div>
-
-        <!-- No signature: show canvas -->
         <div class="sig-body" [hidden]="data.pdf.signatureCount == 1">
             <div class="canvas-wrapper" #canvasContainer>
                 <canvas #canvas class="canvas-el"></canvas>
@@ -36,10 +41,7 @@
                 </div>
                 <div class="sig-line"></div>
             </div>
-        </div>
-        <!-- {{data.pdf.signatureCount}} -->
-
-        <!-- Has signature: show image in same canvas wrapper -->
+        </div> 
         <div class="sig-body" [hidden]="data.pdf.signatureCount == 0">
             <div class="canvas-wrapper">
                 <img *ngIf="data.pdf.signatures.length > 0"
@@ -47,12 +49,9 @@
                     class="absolute inset-0 w-full h-full object-contain p-4" />
                 <div class="sig-line"></div>
             </div>
-        </div>
-
-        <!-- Buttons -->
+        </div> 
         <div class="btn-row">
 
-            <!-- No signature: Save + Clear + Cancel -->
             <ng-container *ngIf="data.pdf.signatureCount == 0">
                 <button (click)="save()" class="btn btn-save"
                     [class.btn-disabled]="isEmpty" [disabled]="isEmpty">
@@ -64,20 +63,22 @@
                     Clear
                 </button>
                 <button (click)="close()" class="btn btn-outline">
-                  
                     Cancel
                 </button>
             </ng-container>
 
-            <!-- Has signature: Close only -->
             <ng-container *ngIf="data.pdf.signatureCount == 1">
                 <button (click)="close()" class="btn btn-outline">
-                   
                     Close
                 </button>
             </ng-container>
 
         </div>
     </div>
+
+   
+    <button class="sig-toggle-btn" (click)="toggleSigPanel()" title="Show signature">
+        <span class="material-icons">keyboard_arrow_up</span>
+    </button>
 
 </div>
