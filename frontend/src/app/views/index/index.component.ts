@@ -20,9 +20,9 @@ import { ConfirmationService } from '../../services/general/confirmation.service
   selector: 'app-index',
   standalone: true,
   imports: [
-    CommonModule, ESignComponent, MatIconModule, 
+    CommonModule, ESignComponent, MatIconModule,
     FormsModule, RouterModule, DocumentTableComponent,
-     BannerComponent, TableComponent],
+    BannerComponent, TableComponent],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
@@ -43,24 +43,24 @@ export class IndexComponent implements OnInit, OnDestroy {
     { field: 'action', text: 'Action' },
   ];
   documents_list: any = [
-    // { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Employee_NDA_Form.pdf',       status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Project_Proposal_Q1.pdf',     status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Service_Terms_Document.pdf',  status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Annual_Report_2023.pdf',      status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Client_Authorization.pdf',   status: 1, signatureCount: 1, signatures: [] },
-    //  { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Employee_NDA_Form.pdf',       status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Project_Proposal_Q1.pdf',     status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Service_Terms_Document.pdf',  status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Annual_Report_2023.pdf',      status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Client_Authorization.pdf',   status: 1, signatureCount: 1, signatures: [] },
-    //  { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Employee_NDA_Form.pdf',       status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Project_Proposal_Q1.pdf',     status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Service_Terms_Document.pdf',  status: 1, signatureCount: 1, signatures: [] },
-    // { name: 'Annual_Report_2023.pdf',      status: 0, signatureCount: 0, signatures: [] },
-    // { name: 'Client_Authorization.pdf',   status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Employee_NDA_Form.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Project_Proposal_Q1.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Service_Terms_Document.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Annual_Report_2023.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Client_Authorization.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Employee_NDA_Form.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Project_Proposal_Q1.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Service_Terms_Document.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Annual_Report_2023.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Client_Authorization.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Contract_Agreement_2024.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Employee_NDA_Form.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Project_Proposal_Q1.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Service_Terms_Document.pdf', status: 1, signatureCount: 1, signatures: [] },
+    { name: 'Annual_Report_2023.pdf', status: 0, signatureCount: 0, signatures: [] },
+    { name: 'Client_Authorization.pdf', status: 1, signatureCount: 1, signatures: [] },
   ];
 
   documents_list_duplicate: any = [];
@@ -102,13 +102,16 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.documents_list = await this.file_service.get_files2();
     this.documents_list_duplicate = this.documents_list;
 
-    for (let i = 0; i < this.documents_list.length; i++) { 
+    for (let i = 0; i < this.documents_list.length; i++) {
       this.documents_list[i].type = 'pdf';
       this.documents_list[i].status =
         this.documents_list[i].signatureCount === 1 ? 'Signed' : 'Not Signed';
+        console.log(this.documents_list[i])
     }
+        console.log(this.documents_list)
+
   }
- 
+
   onEdit(data: any) {
     const dialog = this.dialog.open(FileDetailsComponent, {
       data: { title: 'Edit product', type: 'edit', pdf: data },
@@ -124,7 +127,7 @@ export class IndexComponent implements OnInit, OnDestroy {
       }
     });
   }
- 
+
   onDelete(data: any) {
     if (data.signatureCount == 0) return;
     this.confirmation_service.confirm({

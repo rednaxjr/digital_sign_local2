@@ -26,7 +26,7 @@
         <div class="panel-header">
             <span class="material-icons sig-icon">draw</span>
             <span class="panel-title">
-                {{ data.pdf.signatureCount === 1 ? 'Saved Signature' : 'Draw Your Signature' }}
+                {{ data.pdf.signatureCount === 1 ? '保存済み署名' : '署名を描いてください' }}
             </span>
             <button class="header-collapse-btn" (click)="toggleSigPanel()" title="Collapse">
                 <span class="material-icons">keyboard_arrow_down</span>
@@ -37,7 +37,7 @@
                 <canvas #canvas class="canvas-el"></canvas>
                 <div *ngIf="isEmpty" class="canvas-placeholder">
                     <span class="material-icons" style="font-size:56px;color:#4338ca">gesture</span>
-                    <span class="placeholder-text">Sign here</span>
+                    <span class="placeholder-text">ここに署名</span>
                 </div>
                 <div class="sig-line"></div>
             </div>
@@ -56,20 +56,20 @@
                 <button (click)="save()" class="btn btn-save"
                     [class.btn-disabled]="isEmpty" [disabled]="isEmpty">
                     <span class="material-icons">save</span>
-                    Save Signature
+                    署名を保存
                 </button>
                 <button (click)="clear()" *ngIf="!isEmpty" class="btn btn-outline">
                     <span class="material-icons">restart_alt</span>
-                    Clear
+                    クリア
                 </button>
                 <button (click)="close()" class="btn btn-outline">
-                    Cancel
+                    キャンセル
                 </button>
             </ng-container>
 
             <ng-container *ngIf="data.pdf.signatureCount == 1">
                 <button (click)="close()" class="btn btn-outline">
-                    Close
+                    閉じる
                 </button>
             </ng-container>
 

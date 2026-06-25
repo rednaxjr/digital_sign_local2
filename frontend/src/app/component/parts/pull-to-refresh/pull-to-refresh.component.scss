@@ -1,0 +1,67 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+}
+
+.ptr-host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ── Projected content ───────────────────────────── */
+.ptr-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── Refresh indicator ───────────────────────────── */
+.ptr-indicator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 9999;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 3px 14px rgba(15, 23, 42, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+
+    &.no-transition {
+        transition: opacity 0.2s ease;
+    }
+}
+
+.ptr-icon {
+    color: #4f46e5;
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    transition: transform 0.08s linear;
+
+    &.spin {
+        animation: ptr-spin 0.8s linear infinite;
+        transition: none;
+    }
+}
+
+@keyframes ptr-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

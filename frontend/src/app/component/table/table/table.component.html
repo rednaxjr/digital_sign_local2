@@ -6,7 +6,7 @@
         <ng-container *ngIf="data && data.length > 0; else emptyState">
 
             <div class="data-card drop-shadow-lg" *ngFor="let row of pagedData">
-                <div class="card-title border-b border-slate-200">
+                <div class="card-title border-b-2 border-slate-400 pb-4">
                     <span class="file-icon">
                         <span
                             class="material-icons text-red-500 text-2xl">picture_as_pdf</span>
@@ -15,27 +15,30 @@
                     <span class="card-title-text">{{ row[titleField] }}</span>
                 </div>
 
-                <div class="card-fields border-b border-slate-200"
+                <div class="card-fields border-b-2 border-slate-400"
                     *ngIf="infoLabels.length">
-                    <div class="field-row overflow-hidden flex-row items-center pb-3"
+                    <div
+                        class="field-row overflow-hidden flex-row items-center py-3"
                         *ngFor="let label of infoLabels">
-                        <span class="field-label flex flex-row items-center ">{{
-                            label.text }}</span>
-              
+                        @if(label.field === 'status'){
+                        <span class="field-label flex flex-row items-center ">ステータス </span>
+                        }@else{
+
+                        }
+
                         <span *ngIf="label.field === 'status'"
                             class="status-badge "
                             [ngClass]="row.signatureCount === 1 ? 'status-signed' : 'status-unsigned'">
                             <mat-icon>{{ row[label.field] === 1 ?
                                 'check_circle' : 'radio_button_unchecked'
                                 }}</mat-icon>
-                            <span> {{ row.signatureCount === 1 ? 'Signed' :
-                                'Not Signed' }}</span>
+                            <span> {{ row.signatureCount === 1 ? '署名済み' :
+                                '未署名' }}</span>
 
                         </span>
 
                     </div>
                 </div>
-               
 
                 <div class="card-actions" *ngIf="hasActions">
                     <ng-container
@@ -59,7 +62,7 @@
     <div class="pager" *ngIf="data && data.length > 0">
         <button class="pager-btn" (click)="prevPage()" [disabled]="!canPrev">
             <mat-icon>chevron_left</mat-icon>
-            <span>Previous</span>
+            <span>前へ</span>
         </button>
 
         <span class="pager-info">
@@ -67,7 +70,7 @@
         </span>
 
         <button class="pager-btn" (click)="nextPage()" [disabled]="!canNext">
-            <span>Next</span>
+            <span>次へ</span>
             <mat-icon>chevron_right</mat-icon>
         </button>
     </div>

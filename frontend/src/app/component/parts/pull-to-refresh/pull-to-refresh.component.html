@@ -1,0 +1,16 @@
+<div class="ptr-host !z-10"> 
+    <div class="ptr-indicator "
+        [class.no-transition]="dragging"
+        [style.opacity]="indicatorOpacity"
+        [style.transform]="'translateX(-50%) translateY(' + indicatorOffset + 'px)'">
+        <mat-icon class="ptr-icon"
+            [class.spin]="refreshing"
+            [style.transform]="refreshing ? null : 'rotate(' + iconRotation + 'deg)'">
+            refresh
+        </mat-icon>
+    </div> 
+    <div class="ptr-content">
+        <ng-content></ng-content>
+    </div>
+
+</div>

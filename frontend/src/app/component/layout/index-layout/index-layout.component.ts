@@ -12,10 +12,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { PullToRefreshComponent } from '../../parts/pull-to-refresh/pull-to-refresh.component';
 @Component({
   selector: 'app-index-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, MatMenuModule, MatButtonModule],
+  imports: [CommonModule, RouterModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, MatMenuModule, MatButtonModule, PullToRefreshComponent],
   templateUrl: './index-layout.component.html',
   styleUrl: './index-layout.component.scss'
 })
@@ -89,5 +90,13 @@ export class IndexLayoutComponent {
   }
   logout() {
     this.router.navigate(['/']);
+  }
+
+  /** Reloads the currently active routed page (triggered by pull-to-refresh). */
+  refreshPage() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 } 

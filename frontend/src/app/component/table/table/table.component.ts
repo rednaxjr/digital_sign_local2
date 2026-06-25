@@ -20,21 +20,18 @@ export class TableComponent implements OnChanges {
 
   pageIndex = 0;
 
-  ngOnChanges(): void {
-    // Keep the current page valid when the data set changes/shrinks.
+  ngOnChanges(): void { 
     if (this.pageIndex > this.totalPages - 1) {
       this.pageIndex = this.totalPages - 1;
     }
     if (this.pageIndex < 0) this.pageIndex = 0;
   }
-
-  /** Field used as the card title (the "name" column, or the first column). */
+ 
   get titleField(): string {
     const nameLabel = this.labels?.find(l => l.field === 'name' || l.text === 'Name');
     return nameLabel ? nameLabel.field : (this.labels?.[0]?.field ?? '');
   }
-
-  /** Labels shown as label/value rows inside the card (everything but title + actions). */
+ 
   get infoLabels(): any[] {
     return (this.labels || []).filter(l => l.field !== 'action' && l.field !== this.titleField);
   }
@@ -42,8 +39,7 @@ export class TableComponent implements OnChanges {
   get hasActions(): boolean {
     return !!this.actions && (this.labels || []).some(l => l.field === 'action');
   }
-
-  /* ── Pagination ───────────────────────────────── */
+ 
   get total(): number {
     return this.data?.length || 0;
   }

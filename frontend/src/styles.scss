@@ -60,3 +60,10 @@ body {
     border:1px;
 }
  
+::ng-deep .mat-mdc-header-row {
+    background-color:linear-gradient(135deg, #4f46e5, #6366f1) !important;
+}
+
+::ng-deep .mat-mdc-header-cell {
+    background-color: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+}

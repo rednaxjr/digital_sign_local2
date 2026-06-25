@@ -1,34 +1,34 @@
 <div class="shrink-0 mb-4 flex items-center justify-between">
   <div>
-    <p class="font-bold text-3xl text-slate-800">Document List</p>
+    <p class="font-bold text-3xl text-slate-800">ドキュメントt</p>
   </div>
 </div>
- 
-<div *ngIf="isPortrait" class="flex-1 min-h-0 bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-  <app-table [labels]="table_headers" [data]="documents_list">
-    <ng-template #actions let-default>
-      <div class="card-btn-row py-2"> 
-        <button (click)="onEdit(default)" class="card-action-btn btn-sign py-3"
-          [class.btn-view]="default.signatureCount === 1">
-          <span class="material-icons">{{ default.signatureCount === 1 ? 'visibility' : 'draw' }}</span>
-          <span>{{ default.signatureCount === 1 ? 'View' : 'Sign' }}</span>
-        </button> 
-        <button (click)="onDelete(default)" [disabled]="default.signatureCount == 0"
-          class="card-action-btn btn-delete"
-          [class.btn-delete-disabled]="default.signatureCount == 0">
-          <span class="material-icons">delete</span>
-          <span>Delete</span>
-        </button>
-      </div>
-    </ng-template>
-  </app-table>
-</div>
- 
-<div *ngIf="!isPortrait"
-  class="flex-1 min-h-0 bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
-  <app-document-table
-    [data]="documents_list"
-    (signatureSaved)="handleSignatureSaved($event)"
-    (deleteConfirmed)="deleted()">
-  </app-document-table>
-</div>
+
+  <div *ngIf="isPortrait" class="flex-1 min-h-0 bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+    <app-table [labels]="table_headers" [data]="documents_list">
+      <ng-template #actions let-default>
+        <div class="card-btn-row py-2">
+          <button (click)="onEdit(default)" class="card-action-btn btn-sign py-3"
+            [class.btn-view]="default.signatureCount === 1">
+            <span class="material-icons">{{ default.signatureCount === 1 ? 'visibility' : 'edit' }}</span>
+            <span>{{ default.signatureCount === 1 ? '閲覧' : '署名' }}</span>
+          </button>
+          <button (click)="onDelete(default)" [disabled]="default.signatureCount == 0"
+            class="card-action-btn btn-delete"
+            [class.btn-delete-disabled]="default.signatureCount == 0">
+            <span class="material-icons">delete</span>
+            <span>削除</span>
+          </button>
+        </div>
+      </ng-template>
+    </app-table>
+  </div>
+
+  <div *ngIf="!isPortrait"
+    class="flex-1 min-h-0 bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
+    <app-document-table
+      [data]="documents_list"
+      (signatureSaved)="handleSignatureSaved($event)"
+      (deleteConfirmed)="deleted()">
+    </app-document-table>
+  </div>

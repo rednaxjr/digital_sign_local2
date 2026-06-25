@@ -6,6 +6,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ConfigService } from './services/config/config.service';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { japanesePaginatorIntl } from './shared/japanese-paginator-intl';
 
 function initializeApp(configService: ConfigService) {
   return () => configService.loadConfig();
@@ -25,6 +27,10 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeApp,
       deps: [ConfigService],
       multi: true
+    },
+    {
+      provide: MatPaginatorIntl,
+      useFactory: japanesePaginatorIntl
     }
   ],
 };
