@@ -1,13 +1,11 @@
 import { Component, Input, ContentChild, TemplateRef, OnChanges } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [MatIconModule, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })

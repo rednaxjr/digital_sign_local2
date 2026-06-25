@@ -9,7 +9,7 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 /**
@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-pull-to-refresh',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [MatIconModule],
   templateUrl: './pull-to-refresh.component.html',
   styleUrl: './pull-to-refresh.component.scss',
 })

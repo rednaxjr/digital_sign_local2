@@ -20,7 +20,6 @@ export class ConfigService {
           this.http.get('assets/config.json')
         );
       }
-      console.log('[Config] Loaded:', this.config);
     } catch (error) {
       console.error('Config load failed:', error);
       this.config = {};
@@ -28,7 +27,6 @@ export class ConfigService {
 
     (window as any).electronAPI?.onConfigUpdated?.((newConfig: any) => {
       this.config = newConfig;
-      console.log('[Config] Updated live:', newConfig);
     });
   }
 

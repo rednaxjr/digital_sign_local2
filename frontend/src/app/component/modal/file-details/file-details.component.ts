@@ -1,124 +1,93 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import SignaturePad from 'signature_pad';
-import { FileService } from '../../../services/file/file.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { FileService } from '../../../services/file/file.service';
 
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
-import { ɵEmptyOutletComponent } from "@angular/router";
 @Component({
   selector: 'app-file-details',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatDialogModule, FormsModule, PdfViewerModule, ɵEmptyOutletComponent],
+  imports: [CommonModule, PdfViewerModule],
   templateUrl: './file-details.component.html',
-  styleUrl: './file-details.component.scss'
+  styleUrl: './file-details.component.scss',
 })
 export class FileDetailsComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('canvas') canvas_ref!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasContainer') container_ref!: ElementRef<HTMLDivElement>;
 
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('canvasContainer') containerRef!: ElementRef<HTMLDivElement>;
-  pdfSrc = 'http://localhost:3000/uploaded_files/IMG_0020.pdf';
-  signaturePad!: SignaturePad;
-  resizeObserver!: ResizeObserver;
   isEmpty = true;
   isPdfExpanded = false;
-  /** Portrait-only: controls whether the signature bottom-sheet is slid up (visible). Starts hidden so the PDF is full-size. */
+  /** Portrait-only: whether the signature bottom-sheet is slid up. Starts open when already signed. */
   isSigPanelOpen = false;
-  page: any = 1;
+
+  private signature_pad!: SignaturePad;
+  private resize_observer!: ResizeObserver;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialogRef<FileDetailsComponent>,
     private file_service: FileService
   ) {
-    // If the PDF already has a signature, slide the signature panel up first
-    // (in portrait) instead of showing the PDF panel first.
     this.isSigPanelOpen = this.data?.pdf?.signatureCount === 1;
   }
 
-  ngAfterViewInit() {
-    this.signaturePad = new SignaturePad(this.canvasRef.nativeElement, {
+  ngAfterViewInit(): void {
+    this.signature_pad = new SignaturePad(this.canvas_ref.nativeElement, {
       minWidth: 1,
       maxWidth: 3,
       penColor: '#1a1a2e',
     });
+    this.signature_pad.addEventListener('beginStroke', () => (this.isEmpty = false));
 
-    this.signaturePad.addEventListener('beginStroke', () => {
-      this.isEmpty = false;
-    });
-
-    this.resizeObserver = new ResizeObserver(() => this.resizeCanvas());
-    this.resizeObserver.observe(this.containerRef.nativeElement);
-    this.resizeCanvas();
+    this.resize_observer = new ResizeObserver(() => this.resize_canvas());
+    this.resize_observer.observe(this.container_ref.nativeElement);
+    this.resize_canvas();
   }
 
-  ngOnDestroy() {
-    this.resizeObserver?.disconnect();
-    this.signaturePad?.off();
+  ngOnDestroy(): void {
+    this.resize_observer?.disconnect();
+    this.signature_pad?.off();
   }
 
-  resizeCanvas() {
-    const canvas = this.canvasRef.nativeElement;
-    const container = this.containerRef.nativeElement;
-    const data = this.signaturePad.isEmpty() ? null : this.signaturePad.toData();
+  /** Resizes the canvas to its container while preserving the current strokes. */
+  private resize_canvas(): void {
+    const canvas = this.canvas_ref.nativeElement;
+    const container = this.container_ref.nativeElement;
+    const strokes = this.signature_pad.isEmpty() ? null : this.signature_pad.toData();
 
     const ratio = window.devicePixelRatio || 1;
     canvas.width = container.offsetWidth * ratio;
     canvas.height = container.offsetHeight * ratio;
     canvas.getContext('2d')!.scale(ratio, ratio);
 
-    this.signaturePad.clear();
-    if (data) {
-      this.signaturePad.fromData(data);
-    }
+    this.signature_pad.clear();
+    if (strokes) this.signature_pad.fromData(strokes);
   }
 
-  clear() {
-    this.signaturePad.clear();
+  clear(): void {
+    this.signature_pad.clear();
     this.isEmpty = true;
   }
 
-  async save() {
-    if (this.signaturePad.isEmpty()) return;
-    const dataUrl = this.signaturePad.toDataURL('image/png');
-    const base64 = dataUrl.split(',')[1];
+  async save(): Promise<void> {
+    if (this.signature_pad.isEmpty()) return;
+    const base64 = this.signature_pad.toDataURL('image/png').split(',')[1];
     const stem = this.data.pdf.name.replace(/\.pdf$/i, '');
     await this.file_service.saveSignature(stem, base64);
     this.dialog.close({ action: 'save' });
   }
 
-  async deleteSignature() {
-    const stem = this.data.pdf.name.replace(/\.pdf$/i, '');
-    await this.file_service.deleteSignature(stem);
-    this.dialog.close({ action: 'save' });
-  }
-  private dataURLtoBlob(dataUrl: string): Blob {
-    const [header, data] = dataUrl.split(',');
-    const mime = header.match(/:(.*?);/)![1];
-    const binary = atob(data);
-    const array = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
-    return new Blob([array], { type: mime });
-  }
-
-
-  togglePdf() {
+  togglePdf(): void {
     this.isPdfExpanded = !this.isPdfExpanded;
   }
 
   /** Portrait-only: slide the signature panel up/down over the full-size PDF. */
-  toggleSigPanel() {
+  toggleSigPanel(): void {
     this.isSigPanelOpen = !this.isSigPanelOpen;
   }
 
-  close() {
-    this.dialog.close({
-      action: 'close'
-    });
+  close(): void {
+    this.dialog.close({ action: 'close' });
   }
 }
